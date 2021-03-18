@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  HttpCode,
   HttpException,
   HttpStatus,
   Post,
@@ -14,6 +15,7 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
+  @HttpCode(200)
   loginUser(@Body(new ValidationPipe()) auth: Auth): User {
     const user = this.authService.validateLogin(auth);
     if (user === null) {
