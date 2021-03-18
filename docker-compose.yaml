@@ -1,0 +1,19 @@
+version: '3'
+services: 
+  login-app:
+    build: ./login-app-backend
+    container_name: login-app
+    environment: 
+      - NODE_ENV=production
+      - SERVER_PORT=3000
+      - UI_HOST=*
+    ports:
+      - 3000:3000
+    
+  login-app-ui:
+    build: ./login-app-frontend
+    container_name: login-app-ui
+    ports: 
+      - 4200:80
+    links: 
+      - login-app
