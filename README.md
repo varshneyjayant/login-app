@@ -35,6 +35,14 @@ You can access the UI at http://localhost:4200 or http://localhost
 Read more at ##[Login App Frontend](./login-app-frontend/README.md)
 
 
+### Mock Data
+**Username:** MTN_user
+
+**Password:** MTN281#^@*
+
+
+**NOTE:** Since the username provided in mockdata isn't an email so I have kept the username as a non-empty string.
+
 # 12 Things that can be improved
 
 1. Backend - Proper Authentication system using a library and a database
