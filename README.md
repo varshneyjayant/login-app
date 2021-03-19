@@ -2,6 +2,21 @@
 
 A simple application with NestJS based REST API and Angular based application
 
+### Tech Used
+
+1. Node.js 12.8.3
+2. Typescript
+3. Nest.js
+4. Express
+5. Angular
+6. Bootstrap
+7. Jasmine
+8. Karma
+9. Jest
+10. Express
+11. Docker
+12. Docker Compose
+
 ## How to Run
 
 Currently, this project contains 2 docker contains
