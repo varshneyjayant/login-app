@@ -1,5 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { EventEmitter } from "events";
+import { Store } from "@ngrx/store";
+import { UserDetails } from "../auth/user-details";
+import { AppState } from "../app.state";
+import * as Rx from "RxJS";
 
 @Component({
   selector: "app-main",
@@ -8,25 +12,13 @@ import { EventEmitter } from "events";
 })
 export class MainComponent implements OnInit {
   isLoggedIn: boolean;
-  userLoginEvent = new EventEmitter();
+  user: UserDetails;
 
-  constructor() {
-    this.isLoggedIn = false;
-    this.userLoginEvent.on("loginSuccess", () => {
-      this.isLoggedIn = true;
-    });
-    this.userLoginEvent.on("logout", () => {
-      this.isLoggedIn = false;
-    });
+  constructor(private store: Store<AppState>) {
+    store
+      .select("login")
+      .subscribe((_user: UserDetails) => (this.user = _user));
   }
 
-  ngOnInit() {
-    const userString = localStorage.getItem("user");
-    if (userString) {
-      const user = JSON.parse(userString);
-      if (user.name) {
-        this.isLoggedIn = true;
-      }
-    }
-  }
+  ngOnInit() {}
 }

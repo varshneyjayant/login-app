@@ -1,10 +1,10 @@
 <div class="main container-fluid">
   <div class="mt-4">
-    <div *ngIf="!isLoggedIn">
-      <app-login [userLoginEvent]="userLoginEvent"></app-login>
+    <div *ngIf="user === null">
+      <app-login></app-login>
     </div>
-    <div *ngIf="isLoggedIn">
-      <app-home [userLoginEvent]="userLoginEvent"></app-home>
+    <div *ngIf="user !== null">
+      <app-home></app-home>
     </div>
   </div>
 </div>

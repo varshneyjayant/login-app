@@ -1,7 +1,8 @@
 import { Component, Input, OnInit } from "@angular/core";
-import { EventEmitter } from "events";
+import { Store } from "@ngrx/store";
+import { AppState } from "../app.state";
 import { UserDetails } from "../auth/user-details";
-
+import { loggedOut } from "../auth/login.actions";
 @Component({
   selector: "app-home",
   templateUrl: "./home.component.html",
@@ -9,16 +10,16 @@ import { UserDetails } from "../auth/user-details";
 })
 export class HomeComponent implements OnInit {
   user: UserDetails;
-  @Input() userLoginEvent: EventEmitter;
 
-  constructor() {}
-
-  ngOnInit() {
-    this.user = <UserDetails>JSON.parse(localStorage.getItem("user"));
+  constructor(private store: Store<AppState>) {
+    store
+      .select("login")
+      .subscribe((_user: UserDetails) => (this.user = _user));
   }
 
+  ngOnInit() {}
+
   logOut() {
-    localStorage.removeItem("user");
-    this.userLoginEvent.emit("logout");
+    this.store.dispatch(loggedOut());
   }
 }

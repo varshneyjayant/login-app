@@ -5,6 +5,8 @@ import { LoginService } from "../auth/login.service";
 import { MESSAGES } from "../config/messages";
 import { HttpErrorResponse } from "@angular/common/http";
 import { EventEmitter } from "events";
+import { Store } from "@ngrx/store";
+import { AppState } from "../app.state";
 
 @Component({
   selector: "app-login",
@@ -19,7 +21,24 @@ export class LoginComponent implements OnInit {
 
   @Input() userLoginEvent: EventEmitter;
 
-  constructor(private loginService: LoginService) {}
+  constructor(
+    private loginService: LoginService,
+    private store: Store<AppState>
+  ) {
+    this.store.select("loginError").subscribe((status: number) => {
+      if (status !== 0) {
+        if (status === 401) {
+          this.loginErrors = MESSAGES.AUTHENTICATION_ERROR;
+        } else {
+          this.loginErrors = MESSAGES.UNKNOWN_ERROR;
+        }
+        this.isLoading = false;
+        this.showLoginError = true;
+      } else {
+        this.showLoginError = false;
+      }
+    });
+  }
 
   ngOnInit() {}
 
@@ -54,22 +73,8 @@ export class LoginComponent implements OnInit {
       this.showLoginError = true;
     } else {
       this.isLoading = true;
-      this.loginService.tryLoginUser(this.loginDetails).subscribe(
-        (user: UserDetails) => {
-          this.isLoading = false;
-          localStorage.setItem("user", JSON.stringify(user));
-          this.userLoginEvent.emit("loginSuccess");
-        },
-        (error: HttpErrorResponse) => {
-          if (error.status === 401) {
-            this.loginErrors = MESSAGES.AUTHENTICATION_ERROR;
-          } else {
-            this.loginErrors = MESSAGES.UNKNOWN_ERROR;
-          }
-          this.isLoading = false;
-          this.showLoginError = true;
-        }
-      );
+      this.showLoginError = false;
+      this.loginService.tryLoginUser(this.loginDetails);
     }
   }
 }
